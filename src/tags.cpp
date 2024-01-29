@@ -123,12 +123,20 @@ void writeCommonTags(const MPD::MutableSong &s, TagLib::Tag *tag)
 	tag->setArtist(ToWString(s.getArtist()));
 	tag->setAlbum(ToWString(s.getAlbum()));
 	try {
+#if TAGLIB_MAJOR_VERSION == 2
 		tag->setYear(boost::lexical_cast<unsigned>(s.getDate()));
+#else
+		tag->setYear(boost::lexical_cast<TagLib::uint>(s.getDate()));
+#endif
 	} catch (boost::bad_lexical_cast &) {
 		std::cerr << "writeCommonTags: couldn't write 'year' tag to '" << s.getURI() << "' as it's not a positive integer\n";
 	}
 	try {
+#if TAGLIB_MAJOR_VERSION == 2
 		tag->setTrack(boost::lexical_cast<unsigned>(s.getTrack()));
+#else
+		tag->setTrack(boost::lexical_cast<TagLib::uint>(s.getTrack()));
+#endif
 	} catch (boost::bad_lexical_cast &) {
 		std::cerr << "writeCommonTags: couldn't write 'track' tag to '" << s.getURI() << "' as it's not a positive integer\n";
 	}
