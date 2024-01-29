@@ -44,7 +44,9 @@ std::istream &operator>>(std::istream &is, LyricsFetcher_ &fetcher)
 {
 	std::string s;
 	is >> s;
-	if (s == "genius")
+	if (s == "azlyrics")
+		fetcher = std::make_unique<AzLyricsFetcher>();
+	else if (s == "genius")
 		fetcher = std::make_unique<GeniusFetcher>();
 	else if (s == "justsomelyrics")
 		fetcher = std::make_unique<JustSomeLyricsFetcher>();
